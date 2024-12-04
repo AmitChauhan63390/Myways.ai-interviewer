@@ -14,6 +14,7 @@ yarn dev
 pnpm dev
 # or
 bun dev
+```
 
 ##landing page
 ![image](https://github.com/user-attachments/assets/7b0a519e-ce01-45ac-9576-2c613d57b289)
