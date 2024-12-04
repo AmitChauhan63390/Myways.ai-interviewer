@@ -1,6 +1,10 @@
+"use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const InterviewInstructions: React.FC = () => {
+
+  const router = useRouter();
   return (
     <div className="bg-gray-900 text-white h-[calc(100vh-56px)] flex flex-col items-center justify-center">
       <div className="text-2xl font-bold mb-8 mt-5">Interview Instructions <span className="text-red-500">!!</span></div>
@@ -63,7 +67,7 @@ const InterviewInstructions: React.FC = () => {
         </div>
       </div>
       <div className="mt-8 text-green-500">Stay focused and do your best!</div>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-8">
+      <button onClick={()=>router.push('/questions')} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-8">
         I Understand, start the interview
       </button>
     </div>

@@ -2,6 +2,7 @@ import InstructionScreen from '@/components/instruction-screen'
 import Navbar from '@/components/navbar'
 import PermissionScreen from '@/components/permission-screen'
 import React from 'react'
+import { PermissionProvider } from '../../../../Contexts/PermissionContexts'
 
 const page = () => {
   return (
@@ -9,8 +10,11 @@ const page = () => {
         <div>
             <Navbar/>
         </div>
-        
+        <PermissionProvider>
+
             <PermissionScreen/>
+        </PermissionProvider>
+        
         
 
     </div>
