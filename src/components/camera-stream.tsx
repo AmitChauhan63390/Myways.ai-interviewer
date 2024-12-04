@@ -2,9 +2,9 @@
 import React, { useRef, useEffect } from 'react';
 
 interface CameraStreamProps {
-  className?: string; // Allows custom styling via props
-  flipHorizontal?: boolean; // Optional prop to flip the video horizontally
-  flipVertical?: boolean; // Optional prop to flip the video vertically
+  className?: string; 
+  flipHorizontal?: boolean;
+  flipVertical?: boolean; 
 }
 
 const CameraStream: React.FC<CameraStreamProps> = ({ className, flipHorizontal, flipVertical }) => {
