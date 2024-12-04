@@ -128,10 +128,18 @@ export default function InterviewPage() {
     video.style.width = '100%';
     
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
-    modal.onclick = () => document.body.removeChild(modal);
+    modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4';
+    modal.onclick = (e) => {
+      if (e.target === modal) {
+        document.body.removeChild(modal);
+      }
+    };
     
-    modal.appendChild(video);
+    const videoWrapper = document.createElement('div');
+    videoWrapper.className = 'bg-gray-800 p-4 rounded-lg max-w-full max-h-full overflow-auto';
+    videoWrapper.appendChild(video);
+    modal.appendChild(videoWrapper);
+    
     document.body.appendChild(modal);
     video.play();
   };
@@ -144,8 +152,8 @@ export default function InterviewPage() {
           initial={{ 
             opacity: 0, 
             scale: 0.5,
-            x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-            y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800)
+            x: Math.random() * 100 + '%',
+            y: Math.random() * 100 + '%'
           }}
           animate={{ 
             opacity: [0.1, 0.3, 0.1],
@@ -163,18 +171,18 @@ export default function InterviewPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#161d29] to-[#0c1015] p-8">
+      <div className="min-h-screen bg-gradient-to-br from-[#161d29] to-[#0c1015] p-4 sm:p-6 md:p-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-white mb-2">Interview Submissions</h1>
-            <p className="text-gray-400">All your recorded responses have been saved</p>
+          <div className="text-center mb-8 sm:mb-12">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">Interview Submissions</h1>
+            <p className="text-sm sm:text-base text-gray-400">All your recorded responses have been saved</p>
           </div>
 
-          <div className="grid gap-6">
+          <div className="grid gap-4 sm:gap-6">
             {questions.map((question, index) => {
               const recording = recordedChunks.find(r => r.questionIndex === index);
               
@@ -184,29 +192,29 @@ export default function InterviewPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gray-800/50 rounded-xl p-6"
+                  className="bg-gray-800/50 rounded-xl p-4 sm:p-6"
                 >
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                      <h3 className="text-xl text-white font-medium mb-2">
+                      <h3 className="text-lg sm:text-xl text-white font-medium mb-2">
                         Question {index + 1}
                       </h3>
-                      <p className="text-gray-400">{question.question}</p>
+                      <p className="text-sm sm:text-base text-gray-400">{question.question}</p>
                     </div>
                     {recording ? (
                       <button
                         onClick={() => playRecording(recording.data)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg 
-                          transition-colors flex items-center gap-2"
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg 
+                          transition-colors flex items-center gap-2 text-sm sm:text-base"
                       >
                         <span className="text-lg">▶</span> Play Recording
                       </button>
                     ) : (
-                      <span className="text-red-400">No recording available</span>
+                      <span className="text-sm sm:text-base text-red-400">No recording available</span>
                     )}
                   </div>
                   {recording && (
-                    <div className="mt-4 text-sm text-gray-500">
+                    <div className="mt-2 sm:mt-4 text-xs sm:text-sm text-gray-500">
                       Recording size: {(recording.data.size / (1024 * 1024)).toFixed(2)} MB
                     </div>
                   )}
@@ -220,36 +228,36 @@ export default function InterviewPage() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-[#161d29] to-[#0c1015] relative overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#161d29] to-[#0c1015] relative overflow-hidden p-4">
       <AnimatedDots />
 
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 max-w-2xl w-full px-6 flex flex-col items-center"
+        className="relative z-10 w-full max-w-2xl px-4 sm:px-6 flex flex-col items-center"
       >
         <AnimatePresence mode="wait">
           <motion.div
             key={currentQuestionIndex}
             initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: showCameraSpace ? -30 : 0 }}
-            className="relative mb-8 w-full text-center"
+            animate={{ opacity: 1, y: showCameraSpace ? -20 : 0 }}
+            className="relative mb-6 sm:mb-8 w-full text-center"
           >
-            <p className="text-3xl text-white font-semibold tracking-wide">
+            <p className="text-xl sm:text-2xl md:text-3xl text-white font-semibold tracking-wide">
               {currentQuestionIndex + 1}/{questions.length}. {questions[currentQuestionIndex].question}
             </p>
 
             {isRecording && (
-              <div className="absolute -top-8 right-0">
+              <div className="absolute -top-6 sm:-top-8 right-0">
                 <span className="text-red-500 font-bold animate-pulse">●</span>
-                <span className="ml-2 text-white">{countdown}s</span>
+                <span className="ml-2 text-white text-sm sm:text-base">{countdown}s</span>
               </div>
             )}
 
             {isAnimating && (
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
                 <motion.div 
-                  className="w-24 h-24 bg-blue-500/30 rounded-full absolute"
+                  className="w-16 sm:w-24 h-16 sm:h-24 bg-blue-500/30 rounded-full absolute"
                   animate={{
                     scale: [1, 1.5, 1],
                     opacity: [0.5, 0.2, 0.5],
@@ -259,7 +267,7 @@ export default function InterviewPage() {
                     repeat: Infinity,
                   }}
                 />
-                <div className="w-16 h-16 bg-blue-500 rounded-full animate-ping" />
+                <div className="w-12 sm:w-16 h-12 sm:h-16 bg-blue-500 rounded-full animate-ping" />
               </div>
             )}
           </motion.div>
@@ -269,11 +277,11 @@ export default function InterviewPage() {
           {showCameraSpace && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 450 }}
+              animate={{ opacity: 1, height: 'auto', maxHeight: '60vh' }}
               exit={{ opacity: 0, height: 0 }}
-              className="w-[800px] bg-gray-800/50 rounded-2xl mb-8"
+              className="w-full max-w-[800px] bg-gray-800/50 rounded-2xl mb-6 sm:mb-8 overflow-hidden"
             >
-              <CameraStream flipHorizontal={true} className="w-full h-full rounded-xl" />
+              <CameraStream flipHorizontal={true} className="w-full h-full rounded-xl aspect-video" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -284,21 +292,21 @@ export default function InterviewPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="flex justify-center space-x-4 mt-8"
+              className="flex justify-center space-x-4 mt-6 sm:mt-8"
             >
               {currentQuestionIndex === questions.length - 1 ? (
                 <button
                   onClick={handleSubmit}
-                  className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-xl 
-                    transition-all duration-300"
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 sm:px-6 rounded-xl 
+                    transition-all duration-300 text-sm sm:text-base"
                 >
                   Submit
                 </button>
               ) : (
                 <button
                   onClick={handleNextQuestion}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-xl 
-                    transition-all duration-300"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 sm:px-6 rounded-xl 
+                    transition-all duration-300 text-sm sm:text-base"
                 >
                   Save & Next
                 </button>
@@ -310,3 +318,4 @@ export default function InterviewPage() {
     </div>
   );
 }
+
